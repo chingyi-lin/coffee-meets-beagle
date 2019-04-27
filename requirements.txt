@@ -1,0 +1,10 @@
+Flask
+Jinja2
+flask-login
+werkzeug
+flask_sqlalchemy
+flask_wtf
+flask-material
+requests
+flask-testing
+gunicorn

@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="col s12 m10 l3" id="form_shape_signup">
+  <form action="" method="POST">
+    {{ form.hidden_tag() }}
+    <div class="row">
+      <div class="input-field col s11">
+        <i class="material-icons prefix">account_circle</i>
+        {{ form.username(placeholder = "Username", class ="materialize-textarea icon_prefix2") }}
+      </div>
+    </div>
+    <div class="row">
+      <div class="input-field col s11">
+        <i class="material-icons prefix">email</i>
+        {{ form.email(placeholder = "Email", class ="materialize-textarea icon_prefix2") }}
+      </div>
+    </div>
+    <div class="row">
+      <div class="input-field col s11">
+        <i class="material-icons prefix">lock</i>
+        {{ form.password(placeholder = "Master Password", class ="materialize-textarea icon_prefix2") }}
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col s1"></div>
+      <div class="input-field col s10">
+        {{ form.age(Placeholder = "age", class ="materialize-textarea") }}
+      </div>
+    </div>
+    <button class="btn waves-effect waves-light" type="submit">SIGN UP
+      <i class="material-icons right">send</i>
+    </button>
+  </form>
+  {% with messages = get_flashed_messages() %}
+  {% if messages %}
+  <ul class=flashes>
+    {% for message in messages %}
+    <li>{{ message }}</li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+  {% endwith %}
+  <p>Already have an account? <a id="login" href="{{ url_for('login') }}" title="">Log in</a> instead. </p>
+</div>
+
+{% endblock %}
