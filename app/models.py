@@ -1,8 +1,10 @@
-from app import app, login_manager, user, db
+from app import app, login_manager, db, user, animal, donation, intention
 from flask_login import UserMixin, current_user, login_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from .user import User
-
+from .animal import Animal
+from .donation import Donation
+from .intention import Intention
 
 # --- Database API ---
 
