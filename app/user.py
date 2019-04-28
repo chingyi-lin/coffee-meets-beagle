@@ -10,6 +10,8 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(120), unique=True, nullable=False)
     password_hash = db.Column(db.String(128))
     age = db.Column(db.Integer, nullable=False)
+    donation = db.relationship("Donation", back_populates="user")
+    intention = db.relationship("Intention", back_populates="user")
 
     def __init__(self, username, email, age, id=None):
         self.id = id
