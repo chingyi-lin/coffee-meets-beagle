@@ -35,3 +35,12 @@ def validateLogin(username, password):
         return False
     login_user(comparedUser)
     return True
+
+# ---Donation Helper Methods---
+def isValidUserId(user_id):
+    user = User.query.filter_by(id=user_id).first()
+    return False if user is None else True
+
+def isValidAnimalId(animal_id):
+    animal = Animal.query.filter_by(id=animal_id).first()
+    return False if animal is None else True
