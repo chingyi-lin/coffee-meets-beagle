@@ -128,7 +128,7 @@ def send_visit_intention():
     elif not isValidAnimalId(pet_id):
         message =  {"error":"There is no pet at that id"}
         status_code = 204
-    elif not is_valid_activity(lower(activity)):
+    elif not is_valid_activity(activity.lower()):
         message = {"error":"No such activity"}
         status_code = 204
     else:
