@@ -8,6 +8,7 @@ from .animal import Animal
 from .donation import Donation
 from .intention import Intention
 from .models import *
+from datetime import datetime
 
 # --- Endpoints: --- #
 @app.route('/user/signup', methods=['POST'])
@@ -109,3 +110,50 @@ def logout():
 @login_manager.unauthorized_handler
 def unauthorized_handler():
     return redirect(url_for('login'))
+
+@app.route('/visit', methods=['POST'])
+def send_visit_intention():
+    args = request.get_json()
+    user_id = int(args.get('userId'))
+    pet_id = int(args.get('petId'))
+    activity = args.get('activityType')
+    date_str = args.get("visitDate")
+    format_date = '%m/%d/%Y'
+    time_slot = datetime.strptime(date_str, format_date)
+    message = {}
+    status_code = 200
+    if not isValidUserId(user_id):
+        message =  {"error":"There is no user at that id"}
+        status_code = 204
+    elif not isValidAnimalId(pet_id):
+        message =  {"error":"There is no pet at that id"}
+        status_code = 204
+    elif not is_valid_activity(activity.lower()):
+        message = {"error":"No such activity"}
+        status_code = 204
+    else:
+        new_intention = Intention(activity,time_slot, pet_id,user_id)
+        addToDatabase(new_intention)
+    return Response(json.dumps(message), status= status_code, mimetype='application/json')
+
+def is_valid_activity(activity):
+    return activity in ['volunteering', 'visiting', 'both']
+
+@app.route('/animal', methods=['POST'])
+def add_animal_info():
+    args = request.get_json()
+    pic_url = args.get('pictureURL')
+    name = args.get('name')
+    age = args.get('age')
+    breed = args.get('breed')
+    gender = args.get('gender')
+    availability = args.get('availability')
+    new_pet = Animal(name, breed, pic_url, gender, age, availability, id=None)
+    addToDatabase(new_pet)
+    response = {"id": new_pet.id}
+    return Response(json.dumps(response), status= 200, mimetype='application/json')
+
+
+
+
+
