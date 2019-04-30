@@ -9,6 +9,7 @@ from .donation import Donation
 from .intention import Intention
 from .models import *
 from datetime import datetime
+import requests
 
 # --- Endpoints: --- #
 @app.route('/user/signup', methods=['POST'])
@@ -154,6 +155,67 @@ def add_animal_info():
     return Response(json.dumps(response), status= 200, mimetype='application/json')
 
 
+@app.route('/load_dogs', methods=['POST'])
+def load_dogs():
+    def get_dogs():
+        data = {
+            "ZipCode": "94703",
+            "SearchRadiusInMiles": 50,
+            "PetType": "dog",
+            "PageNumber": 1
+        }
+        response = requests.post("https://getyourpet.com/api/partnerpetsearch", json=data)
+        return response.json()
+    data = get_dogs()
+    for dog in data:
+        name = dog['Name']
+        if dog['Breeds'] != None:
+            breed = ''
+            for b in dog['Breeds']:
+                breed += b['BreedName']
+                breed += ' & '
+            breed = breed[:-3]
+        else:
+            breed = 'N/A'
+        picture_url = dog['PrimaryPhotoUrl']
+        gender = dog['Gender']
+        age = dog['AgeYears']
+        availability = dog['NewlyAvailable']
+        addToDatabase(Animal(name, breed, picture_url, gender, age, availability))
+        
+    return Response(json.dumps(data), status= 200, mimetype='application/json')
 
 
+@app.route('/get_dog/<id>', methods=['GET'])
+def get_dog(id):
+    dog = Animal.query.filter_by(id=id).first()
+    data = {
+        'name': dog.name,
+        'breed': dog.breed,
+        'picture_url': dog.picture_url,
+        'gender': dog.gender,
+        'age': dog.age,
+        'availability': dog.availability
+    }
+    return Response(json.dumps(data), status= 200, mimetype='application/json')
 
+@app.route('/update_dog/<id>', methods=['PUT'])
+def update_dog(id):
+    dog = Animal.query.filter_by(id=id).first()
+    args = request.get_json()
+    if 'name' in args:
+        dog.name = args['name']
+    if 'breed' in args:
+        dog.breed = args['breed']
+    if 'picture_url' in args:
+        dog.picture_url = args['picture_url']
+    if 'gender' in args:
+        dog.gender = args['gender']
+    if  'age' in args:
+        dog.age = args['age']
+    if 'availability' in args:
+        dog.availability = args['availability']
+        
+    db.session.commit()
+
+    return Response(str(dog), status= 200, mimetype='application/json')
