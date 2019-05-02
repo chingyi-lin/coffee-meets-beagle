@@ -120,20 +120,20 @@ def send_visit_intention():
     date_str = args.get("visitDate")
     format_date = '%m/%d/%Y'
     time_slot = datetime.strptime(date_str, format_date)
-    message = {}
-    status_code = 200
     if not isValidUserId(user_id):
-        message =  {"error":"There is no user at that id"}
-        status_code = 204
+        message =  {"ERROR":"There is no user at that id"}
+        status_code = 404
     elif not isValidAnimalId(pet_id):
-        message =  {"error":"There is no pet at that id"}
-        status_code = 204
-    elif not is_valid_activity(lower(activity)):
-        message = {"error":"No such activity"}
-        status_code = 204
+        message =  {"ERROR":"There is no pet at that id"}
+        status_code = 404
+    elif not is_valid_activity(activity.lower()):
+        message = {"ERROR":"No such activity"}
+        status_code = 404
     else:
         new_intention = Intention(activity,time_slot, pet_id,user_id)
         addToDatabase(new_intention)
+        message = ""
+        status_code = 200
     return Response(json.dumps(message), status= status_code, mimetype='application/json')
 
 def is_valid_activity(activity):
