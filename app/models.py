@@ -11,10 +11,18 @@ from .intention import Intention
 def addToDatabase(newObject):
     db.session.add(newObject)
     db.session.commit()
-    return 
+    return
 
 def getUserByUsername(query):
     return User.query.filter_by(username=query).first()
+
+# --- Get Availability and Intention Helper Methods ---
+
+def getAvailabilityByPetId(pet_id):
+    return Animal.query.filter_by(id=pet_id).first()
+
+def getIntentionByPetId(pet_id):
+    return Intention.query.filter_by(id=pet_id).first()
 
 # --- Login/Sign Up Helper Methods ---
 @login_manager.user_loader
@@ -24,11 +32,11 @@ def load_user(user_id):
 def isUsernameUsed(username):
     user = User.query.filter_by(username=username).first()
     return False if user is None else True
-    
+
 def isEmailUsed(email):
     user = User.query.filter_by(email=email).first()
     return False if user is None else True
-    
+
 def validateLogin(username, password):
     comparedUser = getUserByUsername(username)
     if comparedUser is None or not check_password_hash(comparedUser.password_hash, password):

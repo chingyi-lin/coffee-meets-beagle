@@ -154,6 +154,31 @@ def add_animal_info():
     return Response(json.dumps(response), status= 200, mimetype='application/json')
 
 
+@app.route('/animal/availability/<pet_id>', methods=['GET'])
+def get_animal_availability(pet_id):
+    pet_id = int(pet_id)
+
+    if not isValidAnimalId(pet_id):
+        response =  {"ERROR":"There is no pet at that id"}
+        status_code = 404
+
+    else:
+        get_availability = getAvailabilityByPetId(pet_id).availability
+        response = {"availability": get_availability}
+
+    return Response(json.dumps(response), status= 200, mimetype='application/json')
 
 
+@app.route('/animal/activity/<pet_id>', methods=['GET'])
+def get_animal_activity(pet_id):
+    pet_id = int(pet_id)
 
+    if not isValidAnimalId(pet_id):
+        response =  {"ERROR":"There is no pet at that id"}
+        status_code = 404
+
+    else:
+        get_activity = getIntentionByPetId(pet_id).activ_type
+        response = {"activity": get_activity}
+
+    return Response(json.dumps(response), status= 200, mimetype='application/json')
