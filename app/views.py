@@ -121,20 +121,20 @@ def send_visit_intention():
     date_str = args.get("visitDate")
     format_date = '%m/%d/%Y'
     time_slot = datetime.strptime(date_str, format_date)
-    message = {}
-    status_code = 200
     if not isValidUserId(user_id):
-        message =  {"error":"There is no user at that id"}
-        status_code = 204
+        message =  {"ERROR":"There is no user at that id"}
+        status_code = 404
     elif not isValidAnimalId(pet_id):
-        message =  {"error":"There is no pet at that id"}
-        status_code = 204
+        message =  {"ERROR":"There is no pet at that id"}
+        status_code = 404
     elif not is_valid_activity(activity.lower()):
-        message = {"error":"No such activity"}
-        status_code = 204
+        message = {"ERROR":"No such activity"}
+        status_code = 404
     else:
         new_intention = Intention(activity,time_slot, pet_id,user_id)
         addToDatabase(new_intention)
+        message = ""
+        status_code = 200
     return Response(json.dumps(message), status= status_code, mimetype='application/json')
 
 def is_valid_activity(activity):
@@ -149,7 +149,6 @@ def add_animal_info():
     breed = args.get('breed')
     gender = args.get('gender')
     availability = args.get('availability')
-
     if pic_url is None or name is None or age is None or breed is None or gender is None or availability is None:
         status = 400
         response = {"message": "Arguments missing"}
@@ -235,3 +234,25 @@ def update_dog(id):
         db.session.commit()
         response = {"message": str(dog)}
     return Response(json.dumps(response), status= status, mimetype='application/json')
+
+@app.route('/donate', methods=['POST'])
+def add_donation_info():
+    args = request.get_json()
+    user_id = int(args.get('userId'))
+    pet_id = int(args.get('petId'))
+    amount = float(args.get('amount'))
+    date_str = str(datetime.today().strftime('%m/%d/%Y'))
+    format_date = '%m/%d/%Y'
+    date = datetime.strptime(date_str, format_date)
+    if not isValidUserId(user_id):
+        message =  {"ERROR":"There is no user at that id"}
+        status_code = 404
+    elif not isValidAnimalId(pet_id):
+        message =  {"ERROR":"There is no pet at that id"}
+        status_code = 404
+    else:
+        new_donation = Donation(amount, date, user_id, pet_id)
+        addToDatabase(new_donation)
+        message = ""
+        status_code = 200
+    return Response(json.dumps(message), status= status_code, mimetype='application/json')
