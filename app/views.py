@@ -52,7 +52,7 @@ def login():
             data = { "user_id": current_user.id}
             status_code = 200
         else:
-            data = { "error": "The login information is not corrected" }
+            data = { "Error": "The login information is not corrected" }
             status_code = 403
     resp = Response(json.dumps(data), status=status_code, mimetype='application/json')
     return resp
@@ -126,13 +126,13 @@ def send_visit_intention():
     format_date = '%m/%d/%Y'
     time_slot = datetime.strptime(date_str, format_date)
     if not isValidUserId(user_id):
-        message =  {"ERROR":"There is no user at that id"}
+        message =  {"Error":"There is no user at that id"}
         status_code = 404
     elif not isValidAnimalId(pet_id):
-        message =  {"ERROR":"There is no pet at that id"}
+        message =  {"Error":"There is no pet at that id"}
         status_code = 404
     elif not is_valid_activity(activity.lower()):
-        message = {"ERROR":"No such activity"}
+        message = {"Error":"No such activity"}
         status_code = 404
     else:
         new_intention = Intention(activity,time_slot, pet_id,user_id)
@@ -155,7 +155,7 @@ def add_animal_info():
     availability = args.get('availability')
     if pic_url is None or name is None or age is None or breed is None or gender is None or availability is None:
         status = 400
-        response = {"message": "Arguments missing"}
+        response = {"Error": "Arguments missing"}
     else:
         status = 200
         new_pet = Animal(name, breed, pic_url, gender, age, availability, id=None)
@@ -169,7 +169,7 @@ def get_animal_availability(pet_id):
     pet_id = int(pet_id)
 
     if not isValidAnimalId(pet_id):
-        response =  {"ERROR":"There is no pet at that id"}
+        response =  {"Error":"There is no pet at that id"}
         status_code = 404
 
     else:
@@ -184,7 +184,7 @@ def get_animal_activity(pet_id):
     pet_id = int(pet_id)
 
     if not isValidAnimalId(pet_id):
-        response =  {"ERROR":"There is no pet at that id"}
+        response =  {"Error":"There is no pet at that id"}
         status_code = 404
 
     else:
@@ -277,10 +277,10 @@ def add_donation_info():
     pet_id = int(args.get('petId'))
     amount = float(args.get('amount'))
     if not isValidUserId(user_id):
-        message =  {"ERROR":"There is no user at that id"}
+        message =  {"Error":"There is no user at that id"}
         status_code = 404
     elif not isValidAnimalId(pet_id):
-        message =  {"ERROR":"There is no pet at that id"}
+        message =  {"Error":"There is no pet at that id"}
         status_code = 404
     else:
         new_donation = Donation(amount, user_id, pet_id)
