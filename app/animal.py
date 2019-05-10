@@ -11,10 +11,11 @@ class Animal(db.Model):
     gender = db.Column(db.String(10), nullable=False)
     age = db.Column(db.Integer, nullable=False)
     availability = db.Column(db.String(80), nullable=True)
+    activity = db.Column(db.String(30), nullable=True)
     donation = db.relationship("Donation", back_populates="animal")
     intention = db.relationship("Intention", back_populates="animal")
 
-    def __init__(self, name, breed, picture_url, gender, age, availability, id=None):
+    def __init__(self, name, breed, picture_url, gender, age, availability, activity="Playing toys", id=None):
         self.id = id
         self.breed = breed
         self.name = name
@@ -22,6 +23,7 @@ class Animal(db.Model):
         self.gender = gender
         self.age = age
         self.availability = availability
+        self.activity = activity
 
     def __repr__(self):
         return '<Animal %r>' % (self.name)

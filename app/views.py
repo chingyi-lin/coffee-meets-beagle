@@ -9,7 +9,7 @@ from .donation import Donation
 from .intention import Intention
 from .models import *
 from datetime import datetime
-import requests
+import requests, random
 
 # --- Endpoints: --- #
 @app.route('/user/signup', methods=['POST'])
@@ -23,10 +23,14 @@ def signup():
             # in this case user with this username exists already
             data = { "Error": "Username is already used. Please pick a different one." }
             status_code = 409
+            resp = Response(json.dumps(data), status=status_code, mimetype='application/json')
+            return resp
         if isEmailUsed(email) is True:
             # in this case user with this username exists already
             data = { "Error": "Email is already used. Please pick a different one." }
             status_code = 409
+            resp = Response(json.dumps(data), status=status_code, mimetype='application/json')
+            return resp
         newUser = User(username, email, age)
         newUser.set_password(password)
         addToDatabase(newUser)
@@ -169,7 +173,7 @@ def get_animal_availability(pet_id):
         status_code = 404
 
     else:
-        get_availability = getAvailabilityByPetId(pet_id).availability
+        get_availability = getAnimalByPetId(pet_id).availability
         response = {"availability": get_availability}
 
     return Response(json.dumps(response), status= 200, mimetype='application/json')
@@ -184,7 +188,7 @@ def get_animal_activity(pet_id):
         status_code = 404
 
     else:
-        get_activity = getIntentionByPetId(pet_id).activ_type
+        get_activity = getAnimalByPetId(pet_id).activity
         response = {"activity": get_activity}
 
     return Response(json.dumps(response), status= 200, mimetype='application/json')
@@ -216,7 +220,8 @@ def load_dogs():
         gender = dog['Gender']
         age = dog['AgeYears']
         availability = dog['NewlyAvailable']
-        addToDatabase(Animal(name, breed, picture_url, gender, age, availability))
+        activity = random.choice(['Just had a walk! :)', 'Walking with a visitor!', 'Sleeping', 'Feeling bored...'])
+        addToDatabase(Animal(name, breed, picture_url, gender, age, availability, activity))
 
     return Response(json.dumps(data), status= 200, mimetype='application/json')
 
@@ -271,9 +276,6 @@ def add_donation_info():
     user_id = int(args.get('userId'))
     pet_id = int(args.get('petId'))
     amount = float(args.get('amount'))
-    date_str = str(datetime.today().strftime('%m/%d/%Y'))
-    format_date = '%m/%d/%Y'
-    date = datetime.strptime(date_str, format_date)
     if not isValidUserId(user_id):
         message =  {"ERROR":"There is no user at that id"}
         status_code = 404
@@ -281,7 +283,7 @@ def add_donation_info():
         message =  {"ERROR":"There is no pet at that id"}
         status_code = 404
     else:
-        new_donation = Donation(amount, date, user_id, pet_id)
+        new_donation = Donation(amount, user_id, pet_id)
         addToDatabase(new_donation)
         message = ""
         status_code = 200

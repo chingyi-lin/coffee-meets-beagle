@@ -5,7 +5,7 @@ class Donation(db.Model):
     # __tablename__ = "donation"
 
     id = db.Column(db.Integer, primary_key=True)
-    amount = db.Column(db.Integer, unique=True, nullable=False)
+    amount = db.Column(db.Float, nullable=False)
     date = db.Column(db.DateTime, nullable=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     user = db.relationship("User", back_populates="donation")
@@ -13,7 +13,7 @@ class Donation(db.Model):
     animal = db.relationship("Animal", back_populates="donation")
     
 
-    def __init__(self, amount, date, user_id, animal_id, id=None):
+    def __init__(self, amount, user_id, animal_id, id=None):
         self.id = id
         self.amount = amount
         self.date = db.func.now()

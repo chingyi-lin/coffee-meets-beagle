@@ -5,7 +5,7 @@ class Intention(db.Model):
     # __tablename__ = "intention"
 
     id = db.Column(db.Integer, primary_key=True)
-    acitivit_type = db.Column(db.String(15), nullable=False)
+    acitivity_type = db.Column(db.String(15), nullable=False)
     timeslots = db.Column(db.DateTime, nullable=True)
     date = db.Column(db.DateTime, nullable=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
@@ -14,9 +14,9 @@ class Intention(db.Model):
     animal = db.relationship("Animal", back_populates="intention")
     
 
-    def __init__(self, acitivit_type, timeslots, user_id, animal_id, id=None):
+    def __init__(self, acitivity_type, timeslots, user_id, animal_id, id=None):
         self.id = id
-        self.acitivit_type = acitivit_type
+        self.acitivity_type = acitivity_type
         self.timeslots = timeslots
         self.date = db.func.now()
         self.user_id = user_id

@@ -16,13 +16,8 @@ def addToDatabase(newObject):
 def getUserByUsername(query):
     return User.query.filter_by(username=query).first()
 
-# --- Get Availability and Intention Helper Methods ---
-
-def getAvailabilityByPetId(pet_id):
+def getAnimalByPetId(pet_id):
     return Animal.query.filter_by(id=pet_id).first()
-
-def getIntentionByPetId(pet_id):
-    return Intention.query.filter_by(id=pet_id).first()
 
 # --- Login/Sign Up Helper Methods ---
 @login_manager.user_loader
