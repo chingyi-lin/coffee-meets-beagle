@@ -58,4 +58,4 @@ We divided our application into a couple layers:
 
 For the web service and data-api layers (also called backend layers), we used Flask as the major development framework. SQLight was chosen as the method for deploying our database. We also used SQLAlchemy.
 
-While building out separate endpoints in a group, we used dummy data individually in order to test the success of our code. Once successful, we combined our endpoints together and extracted data on 25 different dogs by using the GetYourPet API.
+While building out separate endpoints in a group, we used dummy data individually in order to test the success of our code. Once successful, we combined our endpoints together and extracted data on 25 different dogs by using the GetYourPet API. 
