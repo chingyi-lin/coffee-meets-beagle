@@ -1,4 +1,4 @@
-#Project Description
+# Project Description
 
 From a high level, Coffee Meets Beagle is a service that allows users to discover and match with different animals from the shelter. We envisioned two different types of users using our API. These are:
 
@@ -8,7 +8,7 @@ From a high level, Coffee Meets Beagle is a service that allows users to discove
 Below, we've outlined the functionality that we believe is crucial towards addressing the needs from both interested users and staff members.
 
 
-#Functionality
+# Functionality
 *Sign Up - POST /user/signup*
 
 User will send their sign up information to this endpoint to create their accounts on this service. We require users to provide unique email addresses and username. We also ask users to enter the age because mostly shelters require people to be 18 years old or above to schedule an appointment or become a volunteer.
@@ -50,7 +50,7 @@ Users will be able to retrieve an animals availability by entering the pet ID to
 Users will be able to retrieve the animals activity by using the pet ID. If there is no pet at the pet ID requested, an error will be returned.
 
 
-#Implementation
+# Implementation
 We divided our application into a couple layers:
 
 * A web service that manages the end points from the frontend
@@ -58,4 +58,4 @@ We divided our application into a couple layers:
 
 For the web service and data-api layers (also called backend layers), we used Flask as the major development framework. SQLight was chosen as the method for deploying our database. We also used SQLAlchemy.
 
-While building out separate endpoints in a group, we used dummy data individually in order to test the success of our code. Once successful, we combined our endpoints together and extracted data on 25 different dogs by using the GetYourPet API. 
+While building out separate endpoints in a group, we used dummy data individually in order to test the success of our code. Once successful, we combined our endpoints together and extracted data on 25 different dogs by using the GetYourPet API.
